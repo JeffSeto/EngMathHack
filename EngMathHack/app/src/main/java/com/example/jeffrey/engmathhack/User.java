@@ -1,7 +1,5 @@
 package com.example.jeffrey.engmathhack;
 
-import java.util.ArrayList;
-
 /**
  * Created by Ivy Zhoo Zhoo on 3/4/2016.
  */

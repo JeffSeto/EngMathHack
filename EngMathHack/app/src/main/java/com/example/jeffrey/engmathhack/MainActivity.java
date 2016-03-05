@@ -1,24 +1,35 @@
 package com.example.jeffrey.engmathhack;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import io.triangle.reader.ScanActivity;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
 
-    Intent testIntent;
+    RecyclerView.Adapter adapter;
+
+    List<User> contacts;
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("Start running");
+
+
+        RecyclerView rv = (RecyclerView) findViewById(R.id.contacts_list);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new BillAdapter(contacts);
+        rv.setAdapter(adapter);
+
+
     }
 
     @Override
@@ -41,13 +52,5 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-
-    public void test(View v) {
-        testIntent = new Intent(this, Pay_Bill.class);
-        this.startActivity(testIntent);
     }
 }
