@@ -9,6 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.stripe.android.*;
+import com.stripe.android.model.Card;
+import com.stripe.android.model.Token;
+
+import java.util.Date;
 
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
@@ -129,8 +136,43 @@ public class Pay_Bill extends Activity {
     }
 
     private void cardScanned(PaymentCard card){
+        RSA rsa;
+        try {
+            rsa = MyApplication.getRSA();
+            Date expDate = card.getExpiryDate();
+            int year = expDate.getYear() + 2000 - 100;
+            int month = expDate.getMonth();
+            System.out.println("Year: " + year);
+            Card sCard = new Card(rsa.decrypt(card.getEncryptedAccountNumber()), month, year, "123");
+            String stripeKey = "pk_test_tNGrujIVT9iwZIWnheYyETnA";
+            Stripe stripe = new Stripe(stripeKey);
+            stripe.createToken(sCard, new TokenCallback() {
+                @Override
+                public void onError(Exception error) {
+                    Toast.makeText(Pay_Bill.this,error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//                    toast = new AlertDialog.Builder(Pay_Bill.this);
+//                    toast.setMessage("Error sending payment to stripe");
+//                    toast.show();
+                }
+
+                @Override
+                public void onSuccess(Token token) {
+                    toast = new AlertDialog.Builder(Pay_Bill.this);
+                    toast.setMessage("Succesfully sent payment to stripe");
+                    toast.show();
+
+                }
+            });
+        } catch (Exception e){
+            toast = new AlertDialog.Builder(this);
+            toast.setMessage("Card type isn't supported.  Please try another option");
+            toast.show();
+
+        }
 
     }
+
+
 
     public void nfcClicked(View v){
         startScan();

@@ -4,6 +4,10 @@ import android.net.SSLSessionCache;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import io.triangle.Session;
 import io.triangle.TriangleException;
 
@@ -15,6 +19,7 @@ public class MyApplication extends android.app.Application {
     final String tApplicationId = "IY1EzrlG2HP9KzP";
     final String tAccessKey = "SBG1XkubQT";
     final String tSecretKey = "o3f538fEYQyNpdE0iAILJsc3fBRr03rnFaA2nV70L8ZOl5ctmW2Us4aVRcQrhNEU";
+    public static RSA rsa = null;
 
     public MyApplication(){
         super();
@@ -52,5 +57,21 @@ public class MyApplication extends android.app.Application {
             triangleInitializationTask.execute();
         }
 
+        try {
+            rsa = new RSA();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    public static RSA getRSA(){
+        return rsa;
+    }
+
+
 }
