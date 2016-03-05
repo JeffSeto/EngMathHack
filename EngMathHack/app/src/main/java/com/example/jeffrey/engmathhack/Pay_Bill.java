@@ -30,6 +30,8 @@ public class Pay_Bill extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_pay__bill);
 
         nfcButton = (Button) findViewById(R.id.nfcScanButton);
@@ -64,6 +66,7 @@ public class Pay_Bill extends Activity {
                 }
             });
             toast.setNegativeButton("No", null);
+            toast.show();
         }
         if(nfcAdapter.isEnabled()){
             Intent scanIntent = new Intent(this, io.triangle.reader.ScanActivity.class);
@@ -82,6 +85,7 @@ public class Pay_Bill extends Activity {
             } else {
                 toast = new AlertDialog.Builder(this);
                 toast.setMessage("NFC Scanning cancelled");
+                toast.show();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -98,5 +102,9 @@ public class Pay_Bill extends Activity {
 
     public void cameraClicked(View v){
 
+    }
+
+    public void onPayClicked(View v){
+        super.onBackPressed();
     }
 }

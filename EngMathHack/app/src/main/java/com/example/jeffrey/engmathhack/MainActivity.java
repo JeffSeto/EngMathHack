@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,7 +22,7 @@ public class MainActivity extends Activity {
 
     //FloatingActionButton fab;
 
-    List<User> contacts;
+    ArrayList<User> contacts;
 
 
     @Override
@@ -34,7 +35,14 @@ public class MainActivity extends Activity {
         RecyclerView rv = (RecyclerView) findViewById(R.id.contacts_list);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        contacts = dbHandler.getUsers();
+        //contacts = dbHandler.getUsers();
+        User test = new User("Jeff", 5, "");
+        contacts = new ArrayList();
+        contacts.add(test);
+
+
+
+
         adapter = new BillAdapter(this,contacts);
         rv.setAdapter(adapter);
 

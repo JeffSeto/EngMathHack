@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<User> contacts;
+    private ArrayList<User> contacts;
     DBHandler db;
     Context context;
 
@@ -37,10 +38,10 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    BillAdapter(Context context, List<User> contacts){
+    BillAdapter(Context context, ArrayList<User> contacts){
         this.context = context;
         db= new DBHandler(context,null,null,1);
-        this.contacts = db.getUsers();
+        this.contacts = contacts;
     }
 
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -50,7 +51,7 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
-        contacts = db.getUsers();
+        //contacts = db.getUsers();
         ContactViewHolder v = (ContactViewHolder)holder;
         String name_str = contacts.get(i).getName();
         String desc_str = contacts.get(i).getNote();
@@ -78,6 +79,11 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         return contacts.size();
     }
+
+    public void addUser(){
+        notifyDataSetChanged();
+    }
+
 
 
 }
