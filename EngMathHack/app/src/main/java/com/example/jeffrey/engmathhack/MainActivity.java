@@ -2,16 +2,34 @@ package com.example.jeffrey.engmathhack;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 
 public class MainActivity extends Activity {
+
+    RecyclerView.Adapter adapter;
+
+    List<User> contacts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        RecyclerView rv = (RecyclerView) findViewById(R.id.contacts_list);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new MyAdapter(contacts);
+        rv.setAdapter(adapter);
+
+
     }
 
     @Override

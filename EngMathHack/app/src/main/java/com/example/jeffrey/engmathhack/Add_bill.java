@@ -11,6 +11,7 @@ public class Add_bill extends Activity {
     EditText value;
     EditText description;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
