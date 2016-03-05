@@ -28,6 +28,9 @@ public class Add_Bill extends Activity {
         String note = description.getText().toString();
         User person = new User(name,amount,note);
 
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        dbHandler.createTransaction(person);
+
         // send to database code here......
         super.onBackPressed();
     }

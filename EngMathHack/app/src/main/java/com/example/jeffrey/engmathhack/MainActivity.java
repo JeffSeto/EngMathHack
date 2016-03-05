@@ -1,11 +1,14 @@
 package com.example.jeffrey.engmathhack;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.List;
 
@@ -13,6 +16,10 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     RecyclerView.Adapter adapter;
+
+    DBHandler dbHandler;
+
+    //FloatingActionButton fab;
 
     List<User> contacts;
 
@@ -22,12 +29,28 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbHandler = new DBHandler(this,null,null,1);
 
         RecyclerView rv = (RecyclerView) findViewById(R.id.contacts_list);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new BillAdapter(contacts);
+        contacts = dbHandler.getUsers();
+        adapter = new BillAdapter(this,contacts);
         rv.setAdapter(adapter);
+
+        /* init database */
+
+        //fab = (FloatingActionButton)findViewById(R.id.fab);
+        /**
+        fab.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this,Add_Bill.class);
+                startActivity(intent);
+            }
+        });
+         */
+
+
 
 
     }
@@ -52,5 +75,10 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void add (View text){
+        Intent intent = new Intent(MainActivity.this,Add_Bill.class);
+        startActivity(intent);
     }
 }

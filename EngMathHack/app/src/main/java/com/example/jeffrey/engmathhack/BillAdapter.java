@@ -16,6 +16,8 @@ import java.util.List;
 public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<User> contacts;
+    DBHandler db;
+    Context context;
 
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
@@ -35,8 +37,10 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    BillAdapter(List<User> contacts){
-        this.contacts = contacts;
+    BillAdapter(Context context, List<User> contacts){
+        this.context = context;
+        db= new DBHandler(context,null,null,1);
+        this.contacts = db.getUsers();
     }
 
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -46,6 +50,7 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
+        contacts = db.getUsers();
         ContactViewHolder v = (ContactViewHolder)holder;
         String name_str = contacts.get(i).getName();
         String desc_str = contacts.get(i).getNote();
@@ -55,7 +60,7 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         v.desc.setText(desc_str);
         v.amount.setText("" + amount);
 
-        final Context context = v.item.getContext();
+        //final Context context = v.item.getContext();
         v.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

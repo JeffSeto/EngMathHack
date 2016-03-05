@@ -1,5 +1,7 @@
 package com.example.jeffrey.engmathhack;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ivy Zhoo Zhoo on 3/4/2016.
  */
@@ -33,5 +35,9 @@ public class User {
 
     public String getNote() {
         return this.note;
+    }
+
+    public String toString() {
+        return "Name: " + name + " | Amount: " + amount + " | Notes: " + note;
     }
 }
