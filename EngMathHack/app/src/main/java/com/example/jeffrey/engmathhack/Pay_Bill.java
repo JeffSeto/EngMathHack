@@ -30,16 +30,17 @@ public class Pay_Bill extends Activity {
     final public int NFC_SCAN_REQUEST_CODE = 1000;
     public boolean scanning;
     AlertDialog.Builder toast;
+    String extra[];
 
     Button nfcButton;
     Button cameraButton;
-    TextView name,amount,note;
+    TextView name,amount,note, status;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String extra[] = getIntent().getExtras().getStringArray("1111");
+        extra = getIntent().getExtras().getStringArray("1111");
         setContentView(R.layout.activity_pay__bill);
 
         nfcButton = (Button) findViewById(R.id.nfcScanButton);
@@ -47,10 +48,13 @@ public class Pay_Bill extends Activity {
         name = (TextView) findViewById(R.id.nameView);
         amount = (TextView) findViewById(R.id.amountView);
         note = (TextView) findViewById(R.id.notesView);
+        status = (TextView) findViewById(R.id.status);
+
+        String amountStr = String.format("$%.2f", Double.parseDouble(extra[2]));
 
         name.setText(extra[0]);
         note.setText(extra[1]);
-        amount.setText("$" + extra[2]);
+        amount.setText(amountStr);
 
     }
 
@@ -213,9 +217,9 @@ public class Pay_Bill extends Activity {
     public void cameraClicked(View v){
         Intent scanIntent = new Intent(this, CardIOActivity.class);
 
-        // customize these values to suit your needs.
+        // require the expiry date of the card and the CVV
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, true); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
 
         // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
@@ -227,5 +231,10 @@ public class Pay_Bill extends Activity {
         super.onBackPressed();
     }
 
-
+    /* cash payments */
+    public void cashClicked(View v){
+        DBHandler db = new DBHandler(this, null, null, 1);
+        db.settleTransaction(extra[0]);
+        status.setText("Transaction settled");
+    }
 }

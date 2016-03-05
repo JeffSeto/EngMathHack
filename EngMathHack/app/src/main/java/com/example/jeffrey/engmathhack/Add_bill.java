@@ -2,6 +2,7 @@ package com.example.jeffrey.engmathhack;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -30,8 +31,6 @@ public class Add_Bill extends Activity {
     }
 
     public void confirm (View text){
-
-
         Log.d(tag, "Confirm created");
         String name = contact.getText().toString();
         double amount = Double.parseDouble(value.getText().toString());
@@ -41,7 +40,6 @@ public class Add_Bill extends Activity {
 
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         dbHandler.createTransaction(person);
-
 
         // send to database code here......
         super.onBackPressed();

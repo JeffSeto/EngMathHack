@@ -116,6 +116,7 @@
         android:layout_height="wrap_content"
         android:text="Cash"
         android:id="@+id/cashButton"
+        android:onClick="cashClicked"
         android:layout_weight="1"
         android:layout_marginEnd="23dp"
         android:layout_alignTop="@+id/nfcScanButton"
@@ -145,6 +146,16 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="23dp"
         android:elevation="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:id="@+id/status"
+        android:textSize="18dp"
+        android:layout_below="@+id/cameraButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"/>
 
 
 </RelativeLayout>
