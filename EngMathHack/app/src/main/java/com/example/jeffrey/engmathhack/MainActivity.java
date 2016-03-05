@@ -40,10 +40,8 @@ public class MainActivity extends Activity {
         contacts = new ArrayList();
         contacts.add(test);
 
-
-
-
         adapter = new BillAdapter(this,contacts);
+
         rv.setAdapter(adapter);
 
         /* init database */

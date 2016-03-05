@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     public void createTransaction (User user){
 
+
         if (lookup(user.getName())){
             changeAmount(user.getName(), user.getAmount());
             return;
@@ -66,16 +68,20 @@ public class DBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = getWritableDatabase();
 
-       // Log.d(TAG, "Transaction created");
-       // Log.d(TAG, "Table created = " + tableCreated);
+        Log.d(TAG, "User : " + user.toString());
 
-        db.insert(TABLE_NAME, null, values);
-//
-//        if(chk!=0){
-//            Toast.makeText(myContext, "Record added successfully",Toast.LENGTH_LONG).show();
-//        }else{
-//            Toast.makeText(myContext, "Record added failed...! ",Toast.LENGTH_LONG).show();
-//        }
+        Log.d(TAG, "Table created = " + tableCreated);
+
+        long chk = db.insert(TABLE_NAME, null, values);
+
+        if(chk!=0){
+            Log.d(TAG, "Added successfully");
+        }else{
+            Log.d(TAG, "Add failed");
+        }
+
+        Log.d(TAG, "Inserted: " + databaseToString());
+
 
         db.close();
     }
@@ -129,7 +135,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public List<User> getUsers () {
+    public ArrayList<User> getUsers () {
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -137,7 +143,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-        List <User> users = new ArrayList<User>(c.getCount()); //?????????
+        ArrayList<User> users = new ArrayList<User>(c.getCount()); //?????????
 
         while (!c.isAfterLast()){
             if (c.getString(c.getColumnIndex(COLUMN_NAME)) != null){
@@ -156,28 +162,46 @@ public class DBHandler extends SQLiteOpenHelper{
         return users;
     }
 
+    public void displayQueryResult () {
+        String query="SELECT * from " + TABLE_NAME + ";";
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor c = db.rawQuery(query, null);
+        int i = 0;
+        while (c.moveToNext()) {
+            Log.d(TAG, c.getString(i));
+            i++;
+        }
+    }
+
     public String databaseToString () {
+    //Log.d(TAG, "displaying query: ");
+        //displayQueryResult();
+
         String dbString = "";
+        String testStr = "";
         SQLiteDatabase db = getWritableDatabase();
 
         String query = "SELECT * FROM " + TABLE_NAME + ";";
 
         Cursor c = db.rawQuery(query, null);
-        //Log.d(TAG, "Number of rows: " + c.getCount());
+        Log.d(TAG, "Number of rows: " + c.getCount());
         c.moveToFirst();
 
         while (!c.isAfterLast()){
             if (c.getString(c.getColumnIndex(COLUMN_NAME)) != null){
-                dbString += "Name: " + c.getString(c.getColumnIndex(COLUMN_NAME)) + " | ";
-                dbString += "Amount: " + c.getString(c.getColumnIndex(COLUMN_AMOUNT)) + " | ";
-                dbString += "Notes: " + c.getString(c.getColumnIndex(COLUMN_NOTES));
-                dbString += "\n";
+                String name = c.getString(c.getColumnIndex(COLUMN_NAME));
+                testStr += name + " ";
+                String amount = c.getString(c.getColumnIndex(COLUMN_AMOUNT));
+                testStr += amount + " ";
+                String notes = c.getString(c.getColumnIndex(COLUMN_NOTES));
+                testStr += notes + " ";
+                testStr += "\n";
             }
             //Log.d(TAG, dbString);
             c.moveToNext();
         }
         db.close();
-        return dbString;
+        return testStr;
     }
 
 }
