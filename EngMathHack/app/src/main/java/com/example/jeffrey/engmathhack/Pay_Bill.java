@@ -166,6 +166,9 @@ public class Pay_Bill extends Activity {
                     toast = new AlertDialog.Builder(Pay_Bill.this);
                     toast.setMessage("Succesfully sent payment to stripe");
                     toast.show();
+                    status.setText("Status settled");
+                    DBHandler db = new DBHandler(Pay_Bill.this, null, null, 1);
+                    db.settleTransaction(extra[0]);
 
                 }
             });
@@ -199,6 +202,10 @@ public class Pay_Bill extends Activity {
                     toast = new AlertDialog.Builder(Pay_Bill.this);
                     toast.setMessage("Succesfully sent payment to stripe");
                     toast.show();
+                    DBHandler db = new DBHandler(Pay_Bill.this, null, null, 1);
+                    db.settleTransaction(extra[0]);
+                    status.setText("Transaction settled");
+
 
                 }
             });

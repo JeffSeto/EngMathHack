@@ -23,7 +23,7 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
         TextView name;
-        TextView desc;
+        //TextView desc;
         TextView amount;
         View item;
 
@@ -31,7 +31,7 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(item);
             this.item = item;
             name = (TextView) itemView.findViewById(R.id.name_main);
-            desc = (TextView) itemView.findViewById(R.id.desc_main);
+            //desc = (TextView) itemView.findViewById(R.id.desc_main);
             amount = (TextView) itemView.findViewById(R.id.amount_main);
 
         }
@@ -58,9 +58,9 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final double amount = contacts.get(i).getAmount();
 
         v.name.setText(name_str);
-        v.desc.setText(desc_str);
+        //v.desc.setText(desc_str);
         String amountStr = String.format("$%.2f", amount);
-        v.amount.setText("$" + amountStr);
+        v.amount.setText(amountStr);
 
         //final Context context = v.item.getContext();
         v.item.setOnClickListener(new View.OnClickListener() {

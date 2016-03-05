@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Add_Bill extends Activity {
 
@@ -33,10 +34,14 @@ public class Add_Bill extends Activity {
     public void confirm (View text){
         Log.d(tag, "Confirm created");
         String name = contact.getText().toString();
+        if (name == null || value.getText() == null){
+            Toast.makeText(this, "Please enter information in the required fields", Toast.LENGTH_LONG);
+            return;
+        }
         double amount = Double.parseDouble(value.getText().toString());
         String note = description.getText().toString();
-        User person = new User(name,amount,note);
 
+        User person = new User(name,amount,note);
 
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         dbHandler.createTransaction(person);
