@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by melissali on 16-03-04.
  */
@@ -49,7 +52,7 @@ public class DBHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public void createTransaction (Context myContext, User user){
+    public void createTransaction (User user){
 
         if (lookup(user.getName())){
             changeAmount(user.getName(), user.getAmount());
@@ -63,16 +66,16 @@ public class DBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = getWritableDatabase();
 
-        //Log.d(TAG, "Transaction created");
-        //Log.d(TAG, "Table created = " + tableCreated);
+       // Log.d(TAG, "Transaction created");
+       // Log.d(TAG, "Table created = " + tableCreated);
 
-        long chk = db.insert(TABLE_NAME, null, values);
-
-        if(chk!=0){
-            Toast.makeText(myContext, "Record added successfully",Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(myContext, "Record added failed...! ",Toast.LENGTH_LONG).show();
-        }
+        db.insert(TABLE_NAME, null, values);
+//
+//        if(chk!=0){
+//            Toast.makeText(myContext, "Record added successfully",Toast.LENGTH_LONG).show();
+//        }else{
+//            Toast.makeText(myContext, "Record added failed...! ",Toast.LENGTH_LONG).show();
+//        }
 
         db.close();
     }
@@ -126,6 +129,33 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
+    public List<User> getUsers () {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_NAME + ";";
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+        List <User> users = new ArrayList<User>(c.getCount()); //?????????
+
+        while (!c.isAfterLast()){
+            if (c.getString(c.getColumnIndex(COLUMN_NAME)) != null){
+
+                String name = c.getString(c.getColumnIndex(COLUMN_NAME));
+                double amount = Double.parseDouble(c.getString(c.getColumnIndex(COLUMN_AMOUNT)));
+                String notes = c.getString(c.getColumnIndex(COLUMN_NOTES));
+
+                User u = new User(name, amount, notes);
+                users.add(u);
+                //Log.d(TAG, u.toString());
+            }
+            c.moveToNext();
+        }
+        db.close();
+        return users;
+    }
+
     public String databaseToString () {
         String dbString = "";
         SQLiteDatabase db = getWritableDatabase();
@@ -143,6 +173,7 @@ public class DBHandler extends SQLiteOpenHelper{
                 dbString += "Notes: " + c.getString(c.getColumnIndex(COLUMN_NOTES));
                 dbString += "\n";
             }
+            //Log.d(TAG, dbString);
             c.moveToNext();
         }
         db.close();
