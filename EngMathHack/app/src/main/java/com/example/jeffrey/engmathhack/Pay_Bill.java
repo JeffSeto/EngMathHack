@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.stripe.android.*;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
+import com.stripe.exception.AuthenticationException;
 
 import java.util.Date;
 
@@ -125,6 +126,8 @@ public class Pay_Bill extends Activity {
                 if (scanResult.postalCode != null) {
                     resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
                 }
+                cardScanned(scanResult);
+
             }
             else {
                 resultDisplayStr = "Scan was canceled.";
@@ -140,9 +143,8 @@ public class Pay_Bill extends Activity {
         try {
             rsa = MyApplication.getRSA();
             Date expDate = card.getExpiryDate();
-            int year = expDate.getYear() + 2000 - 100;
+            int year = expDate.getYear()%100 + 2000;
             int month = expDate.getMonth();
-            System.out.println("Year: " + year);
             Card sCard = new Card(rsa.decrypt(card.getEncryptedAccountNumber()), month, year, "123");
             String stripeKey = "pk_test_tNGrujIVT9iwZIWnheYyETnA";
             Stripe stripe = new Stripe(stripeKey);
@@ -168,6 +170,36 @@ public class Pay_Bill extends Activity {
             toast.setMessage("Card type isn't supported.  Please try another option");
             toast.show();
 
+        }
+
+    }
+
+    private void cardScanned(CreditCard card){
+        card.getFormattedCardNumber();
+        Card sCard = new Card(card.getFormattedCardNumber(), card.expiryMonth, card.expiryYear%100 + 2000, "123");
+        String stripeKey = "pk_test_tNGrujIVT9iwZIWnheYyETnA";
+        Stripe stripe = null;
+        try {
+            stripe = new Stripe(stripeKey);
+            stripe.createToken(sCard, new TokenCallback() {
+                @Override
+                public void onError(Exception error) {
+                    Toast.makeText(Pay_Bill.this,error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//                    toast = new AlertDialog.Builder(Pay_Bill.this);
+//                    toast.setMessage("Error sending payment to stripe");
+//                    toast.show();
+                }
+
+                @Override
+                public void onSuccess(Token token) {
+                    toast = new AlertDialog.Builder(Pay_Bill.this);
+                    toast.setMessage("Succesfully sent payment to stripe");
+                    toast.show();
+
+                }
+            });
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
         }
 
     }
