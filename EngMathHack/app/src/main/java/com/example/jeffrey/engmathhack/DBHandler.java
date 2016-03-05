@@ -27,7 +27,7 @@ public class DBHandler extends SQLiteOpenHelper{
     // Constructor
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-        Log.d(TAG, "Created database handler");
+        //Log.d(TAG, "Created database handler");
     }
 
 
@@ -50,6 +50,12 @@ public class DBHandler extends SQLiteOpenHelper{
     }
 
     public void createTransaction (Context myContext, User user){
+
+        if (lookup(user.getName())){
+            changeAmount(user.getName(), user.getAmount());
+            return;
+        }
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_AMOUNT, user.getAmount());
@@ -57,12 +63,11 @@ public class DBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = getWritableDatabase();
 
-        Log.d(TAG, "Transaction created");
-        Log.d(TAG, "Table created = " + tableCreated);
+        //Log.d(TAG, "Transaction created");
+        //Log.d(TAG, "Table created = " + tableCreated);
 
         long chk = db.insert(TABLE_NAME, null, values);
 
-        // myContext???????
         if(chk!=0){
             Toast.makeText(myContext, "Record added successfully",Toast.LENGTH_LONG).show();
         }else{
@@ -72,20 +77,53 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void changeAmount (User user, double deltaAmount){
+    public boolean lookup (String name){
+
+        String query = "SELECT " + COLUMN_NAME + " FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = \"" + name + "\"";
+        //Log.d(TAG, "lookup running query: " + query);
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor c = db.rawQuery(query, null);
+        c.moveToFirst();
+
+        try{
+            String nameQuery = c.getString(c.getColumnIndex(COLUMN_NAME));
+            //Log.d(TAG, "nameQuery = " + nameQuery);
+            db.close();
+            return true;
+        }catch(Exception e){
+            //Log.d(TAG, "Query failed");
+            db.close();
+            return false;
+        }
+    }
+
+    public void changeAmount (String name, double deltaAmount){
         String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_AMOUNT + " = " + COLUMN_AMOUNT + " + " + deltaAmount +
-                " WHERE " + COLUMN_NAME + " = \"" + user.getName() + "\";";
-        user.changeAmount(deltaAmount);
+                " WHERE " + COLUMN_NAME + " = \"" + name + "\";";
+
+        String amountQuery = "SELECT " + COLUMN_AMOUNT + " FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = \"" + name + "\"";
+
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
+        Cursor c = db.rawQuery(amountQuery, null);
+        //Log.d(TAG, "Number of columns: " + c.getColumnCount());
+        c.moveToFirst();
+        double amount = c.getFloat(c.getColumnIndex(COLUMN_AMOUNT));
+        if (amount == 0) {
+            settleTransaction(name);
+        }
+
         db.close();
     }
 
-    public void settleTransaction (User user) {
+    public void settleTransaction (String name) {
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = \"" + name + "\";";
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " = \"" + user.getName() + "\";");
+        //Log.d(TAG, query);
+        db.execSQL(query);
         db.close();
-        // delete user
     }
 
     public String databaseToString () {
@@ -95,7 +133,7 @@ public class DBHandler extends SQLiteOpenHelper{
         String query = "SELECT * FROM " + TABLE_NAME + ";";
 
         Cursor c = db.rawQuery(query, null);
-        Log.d(TAG, "Number of rows: " + c.getCount());
+        //Log.d(TAG, "Number of rows: " + c.getCount());
         c.moveToFirst();
 
         while (!c.isAfterLast()){
