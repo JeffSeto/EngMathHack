@@ -36,4 +36,8 @@ public class User {
     public String getNote() {
         return this.note;
     }
+
+    public String toString() {
+        return "Name: " + name + " | Amount: " + amount + " | Notes: " + note;
+    }
 }
