@@ -11,6 +11,7 @@
 
     <RelativeLayout
         android:elevation="8dp"
+<<<<<<< HEAD
         android:background="#26C6DA"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -19,16 +20,30 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/relativeLayout">
 
+=======
+        android:background="#4FC3F7"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+>>>>>>> kitty_branch
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name:"
             android:id="@+id/nameLabel"
+<<<<<<< HEAD
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_marginStart="47dp"
             android:layout_marginTop="16dp" />
+=======
+            android:layout_marginStart="53dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="47dp" />
+>>>>>>> kitty_branch
 
         <EditText
             android:layout_width="wrap_content"
@@ -36,33 +51,57 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/name"
+<<<<<<< HEAD
             android:layout_above="@+id/valueLabel"
+=======
+            android:layout_below="@+id/nameLabel"
+>>>>>>> kitty_branch
             android:layout_alignStart="@+id/nameLabel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:text="Value:"
             android:id="@+id/valueLabel"
             android:layout_centerVertical="true"
             android:layout_alignStart="@+id/name" />
+=======
+            android:text="Amount:"
+            android:layout_below="@+id/name"
+            android:layout_alignStart="@+id/name"
+            android:id="@+id/valueLabel" />
+>>>>>>> kitty_branch
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:ems="10"
             android:id="@+id/value"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/valueLabel"
             android:layout_marginBottom="34dp" />
+=======
+            android:id="@+id/amount"
+            android:layout_below="@+id/valueLabel"
+            android:layout_alignStart="@+id/valueLabel"
+            android:layout_alignEnd="@+id/name" />
+
+>>>>>>> kitty_branch
     </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Note:"
+<<<<<<< HEAD
         android:id="@+id/descriptionLabel"
         android:layout_marginStart="39dp"
+=======
+        android:id="@+id/noteLabel"
+        android:layout_marginStart="43dp"
+>>>>>>> kitty_branch
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
@@ -71,6 +110,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
+<<<<<<< HEAD
         android:id="@+id/description"
         android:layout_below="@+id/descriptionLabel"
         android:layout_alignStart="@+id/descriptionLabel" />
@@ -85,4 +125,19 @@
         android:layout_marginBottom="33dp"
         android:onClick="confirm"/>
 
+=======
+        android:id="@+id/note"
+        android:layout_below="@+id/noteLabel"
+        android:layout_alignStart="@+id/noteLabel" />
+
+    <Button
+        android:background="#4FC3F7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:id="@+id/confirm"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="confirm"/>
+>>>>>>> kitty_branch
 </RelativeLayout>
