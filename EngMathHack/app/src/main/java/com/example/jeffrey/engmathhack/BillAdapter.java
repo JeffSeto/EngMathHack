@@ -40,7 +40,7 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     BillAdapter(Context context, ArrayList<User> contacts){
         this.context = context;
-        db= new DBHandler(context,null,null,1);
+        db = new DBHandler(context,null,null,1);
         this.contacts = contacts;
     }
 
@@ -59,7 +59,8 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         v.name.setText(name_str);
         v.desc.setText(desc_str);
-        v.amount.setText("$" + amount);
+        String amountStr = String.format("$%.2f", amount);
+        v.amount.setText("$" + amountStr);
 
         //final Context context = v.item.getContext();
         v.item.setOnClickListener(new View.OnClickListener() {
@@ -73,24 +74,14 @@ public class BillAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 extra[2] = "" + amount;
                 intent.putExtra("1111", extra);
                 context.startActivity(intent);
-
             }
         });
-
-
-
     }
 
     @Override
     public int getItemCount() {
+        contacts = db.getUsers();
         return contacts.size();
     }
-
-    public void addUser(){
-        notifyDataSetChanged();
-    }
-
-
-
 }
 

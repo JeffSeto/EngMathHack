@@ -42,6 +42,8 @@ public class MainActivity extends Activity {
 
         adapter = new BillAdapter(this,contacts);
 
+
+
         rv.setAdapter(adapter);
 
         /* init database */
@@ -59,6 +61,12 @@ public class MainActivity extends Activity {
 
 
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
