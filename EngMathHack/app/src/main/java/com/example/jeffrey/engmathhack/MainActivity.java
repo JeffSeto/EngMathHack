@@ -1,17 +1,24 @@
 package com.example.jeffrey.engmathhack;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import io.triangle.reader.ScanActivity;
 
 
 public class MainActivity extends Activity {
 
+    Intent testIntent;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        System.out.println("Start running");
     }
 
     @Override
@@ -34,5 +41,13 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    public void test(View v) {
+        testIntent = new Intent(this, Pay_Bill.class);
+        this.startActivity(testIntent);
     }
 }
