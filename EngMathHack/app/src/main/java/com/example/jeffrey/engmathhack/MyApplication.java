@@ -2,6 +2,7 @@ package com.example.jeffrey.engmathhack;
 
 import android.net.SSLSessionCache;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import io.triangle.Session;
 import io.triangle.TriangleException;
@@ -11,7 +12,7 @@ import io.triangle.TriangleException;
  */
 public class MyApplication extends android.app.Application {
 
-    final String tApplicationId = "aU6FxRS5BGKvheK";
+    final String tApplicationId = "IY1EzrlG2HP9KzP";
     final String tAccessKey = "SBG1XkubQT";
     final String tSecretKey = "o3f538fEYQyNpdE0iAILJsc3fBRr03rnFaA2nV70L8ZOl5ctmW2Us4aVRcQrhNEU";
 
@@ -23,12 +24,14 @@ public class MyApplication extends android.app.Application {
         super.onCreate();
 
         final Session triangleSession = Session.getInstance();
-
         if(!triangleSession.isInitialized()){
+            System.out.println("Initializing triangle session");
             AsyncTask<Void, Void, Void> triangleInitializationTask = new AsyncTask<Void, Void, Void>(){
+                Exception test;
                 @Override
                 protected Void doInBackground(Void... voids)
                 {
+                    System.out.println("Attempting to initialize");
                     try
                     {
                         triangleSession.initialize(
@@ -36,15 +39,18 @@ public class MyApplication extends android.app.Application {
                                 tAccessKey,      // Access Key
                                 tSecretKey, // Secret Key
                                 MyApplication.this);
-                        System.out.println("Yay it worked");
                     }
                     catch (Exception e)
                     {
-                        System.out.println("TRIANGLE DISASTER");
+                        System.out.println("Triangle initialization failed");
                     }
                     return null;
+
+
                 }
             };
+            triangleInitializationTask.execute();
         }
+
     }
 }
